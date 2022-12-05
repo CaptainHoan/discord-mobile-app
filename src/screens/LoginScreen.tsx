@@ -1,13 +1,12 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
 
-
 const LoginScreen = () => {
   return (
     <SafeAreaView className='bg-gray-700 flex-1'>
         <View className='mt-10 items-center justify-center mb-8'>
             <Text className='text-2xl font-bold text-white mb-3'>Welcome back</Text>
-            <Text className='text-md font-bold text-gray-400'>We're so excited to see you again</Text>
+            <Text className='text-md font-bold text-gray-400'>We're so excited to see you again!</Text>
         </View>
         <View className='mx-5'>
             <Text className='text-md text-gray-300 font-extrabold mb-2'>ACCOUNT INFORMATION</Text>
