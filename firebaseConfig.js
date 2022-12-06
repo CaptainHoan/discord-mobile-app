@@ -1,8 +1,9 @@
+import { FIREBASE_KEY } from '@env';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBJQqhSAaG8d-WwytNLY8bbzfeAHKFx_4o",
+    apiKey: FIREBASE_KEY,
     authDomain: "discord-7e896.firebaseapp.com",
     projectId: "discord-7e896",
     storageBucket: "discord-7e896.appspot.com",
