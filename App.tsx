@@ -1,11 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
-import RootNavigation from './src/navigation/RootNavigation';
-import LoginScreen from './src/screens/LoginScreen';
+import RootStack from './src/navigation/RootStack';
 
 export default function App() {
-  return (
-    <>
-      <LoginScreen />
-    </>
-  );
+  return <RootStack />
 }

@@ -1,5 +1,7 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
 import React, {useState} from 'react'
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../firebaseConfig';
 
 const LoginScreen = () => {
   return (
@@ -21,6 +23,18 @@ const LoginForm = () => {
 
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+
+    //const auth = getAuth();
+
+    const signIn = async() => {
+        await signInWithEmailAndPassword(auth, email, password)
+        .then( (userCredential) => {
+            const user = userCredential.user;
+            //const LoginToken = user.stsTokenManager.accessToken
+            console.log('login successfully', user)
+        })
+        .catch(err => console.log(err.message))
+    }
 
     return (
         <View>
@@ -62,7 +76,7 @@ const LoginForm = () => {
                 <Text className='text-sm text-blue-300'>forgot your password?</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className='bg-blue-400 p-3 rounded-md '>
+            <TouchableOpacity className='bg-blue-400 p-3 rounded-md' onPress={signIn}>
                 <Text className='text-white font-bold text-lg text-center '>Log In</Text>
             </TouchableOpacity>
             
