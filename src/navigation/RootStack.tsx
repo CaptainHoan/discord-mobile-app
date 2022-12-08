@@ -5,6 +5,7 @@ import MainScreen from '../screens/MainScreen';
 import LoginScreen from '../screens/LoginScreen';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../firebaseConfig';
+import DrawerNavigation from './DrawerNavigation';
 
 const RootStack = () => {
 
@@ -17,8 +18,8 @@ const RootStack = () => {
   return (
     <>
         {isLogIn === true
-            ? (<MainScreen />)
-            : (<LoginScreen />)
+            ? (<DrawerNavigation />)
+            : (<LoginScreen />) 
         }
     </>
   )
