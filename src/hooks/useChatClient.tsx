@@ -1,5 +1,5 @@
 import { STREAMCHAT_KEY } from '@env';
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StreamChat } from 'stream-chat';
 import { auth } from '../../firebaseConfig';
 

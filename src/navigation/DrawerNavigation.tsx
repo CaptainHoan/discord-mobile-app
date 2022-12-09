@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity, NativeMethods } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
 import MainScreen from '../screens/MainScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { NativeSafeAreaViewProps, SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons, AntDesign, Entypo } from '@expo/vector-icons';
 import { STREAMCHAT_KEY } from '@env';
@@ -13,9 +13,10 @@ import {
     Chat,
     ChannelList
   } from 'stream-chat-expo'; // Or stream-chat-expo
+
 import { NativeProps } from 'react-native-safe-area-context/lib/typescript/specs/NativeSafeAreaView';
 
-  const chatClient = StreamChat.getInstance(STREAMCHAT_KEY)
+const chatClient = StreamChat.getInstance(STREAMCHAT_KEY)
 
 const DrawerStack = createDrawerNavigator();
 
@@ -24,7 +25,10 @@ const DrawerNavigation = () => {
     <NavigationContainer>
         <OverlayProvider>
             <Chat client={chatClient}>
-                <DrawerStack.Navigator 
+                <DrawerStack.Navigator
+                    options={{
+                        defaultStatus: 'open'
+                    }}
                     drawerContent={(
                         props: JSX.IntrinsicAttributes 
                         & NativeSafeAreaViewProps 
@@ -50,15 +54,25 @@ const CustomDrawerContent =
     ) => {
         
     const { clientIsReady } = useChatClient();
+    const navigation = useNavigation()
 
     if (clientIsReady) {
       return <Text className='mt-10 text-center font-bold text-2xl'>Loading chat ...</Text>
     }
 
+    const onChannelSelect = (channel) => {
+        if(channel) {
+            navigation.navigate('main', {channel})
+            console.log(channel)
+        }
+        
+    }
+
     return (
-       
         <SafeAreaView {...props} className='bg-white flex-1'>
-            <ChannelList />
+            <ChannelList
+                onSelect={onChannelSelect} 
+            />
             {/** <DrawerItemList {...props}/>*/}     
         </SafeAreaView>
     )

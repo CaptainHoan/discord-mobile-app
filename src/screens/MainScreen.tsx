@@ -1,10 +1,23 @@
 import { View, Text, SafeAreaView } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { signOut } from "firebase/auth";
 import { auth } from '../../firebaseConfig'
+import { Channel, MessageInput, MessageList } from 'stream-chat-expo';
+import { useRoute } from '@react-navigation/native';
 
 const MainScreen = () => {
+
+  const route = useRoute()
+  const channel = route?.params?.channel
+
+  if(!channel) {
+    return (
+      <View>
+        <Text>haha</Text>
+      </View>
+    )
+  }
 
     const signOutUser = async() => {
         await signOut(auth)
@@ -15,11 +28,10 @@ const MainScreen = () => {
     }
 
   return (
-    <SafeAreaView>
-      <TouchableOpacity onPress={signOutUser}>
-        <Text>Sign out</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+      <Channel channel={channel}>
+        <MessageList />
+        <MessageInput />
+      </Channel> 
   )
 }
 
