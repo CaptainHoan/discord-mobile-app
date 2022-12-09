@@ -1,10 +1,10 @@
 import React, { createContext, useState } from 'react'
 
 export const ChatContext = createContext({
-    channel: null, 
+    channel: string, 
     setChannel: (channel) => {},
     thread: null,
-    setThread: (thread) => {},
+    setThread: (thread: string) => {},
 })
 
 export const chatProvider = ({children}) => {

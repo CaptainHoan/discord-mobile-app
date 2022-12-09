@@ -21,6 +21,13 @@ const useChatClient = () => {
               },
               chatClient.devToken('captainhoan')
             )
+            //const channel = chatClient.channel(
+              //'team',
+             //'ethernity',
+             // {name: 'Ethernity'}
+           // )
+
+            //await channel.create()
           } catch(error) {
             console.log(error)
           }

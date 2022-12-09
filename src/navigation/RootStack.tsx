@@ -1,7 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { useState } from 'react'
-import MainScreen from '../screens/MainScreen';
 import LoginScreen from '../screens/LoginScreen';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from '../../firebaseConfig';
@@ -18,8 +17,12 @@ const RootStack = () => {
   return (
     <>
         {isLogIn === true
-            ? (<DrawerNavigation />)
-            : (<LoginScreen />) 
+            ? (
+              <DrawerNavigation />
+              )
+            : (
+              <LoginScreen />
+              ) 
         }
     </>
   )
