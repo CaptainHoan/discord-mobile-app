@@ -1,15 +1,14 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
 export const ChatContext = createContext({
-    channel: string, 
+    channel: null, 
     setChannel: (channel) => {},
-    thread: null,
-    setThread: (thread: string) => {},
 })
 
-export const chatProvider = ({children}) => {
-    const [channel, setChannel] = useState();
-    const [thread, setThread] = useState();
+export const ChatProvider = ({children}) => {
+    const [channel, setChannel] = useState(null);
 
-    return <ChatContext.Provider value={{channel, setChannel, thread, setThread}}>{children}</ChatContext.Provider>
+    return <ChatContext.Provider value={{channel, setChannel}}>{children}</ChatContext.Provider>
 }
+
+export const useChatContext = () => useContext(ChatContext)

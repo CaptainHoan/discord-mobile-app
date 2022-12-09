@@ -14,7 +14,6 @@ const LoginScreen = () => {
             <Text className='text-md text-gray-300 font-extrabold mb-2'>ACCOUNT INFORMATION</Text>
             <LoginForm />
         </View>
-      
     </SafeAreaView>
   )
 }
@@ -79,8 +78,6 @@ const LoginForm = () => {
             <TouchableOpacity className='bg-blue-400 p-3 rounded-md' onPress={signIn}>
                 <Text className='text-white font-bold text-lg text-center '>Log In</Text>
             </TouchableOpacity>
-            
-            
         </View>
     )
 }
