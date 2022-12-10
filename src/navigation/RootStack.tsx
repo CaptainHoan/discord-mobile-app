@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { useState } from 'react'
 import LoginScreen from '../screens/LoginScreen';
 import { onAuthStateChanged } from "firebase/auth";
