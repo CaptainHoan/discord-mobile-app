@@ -40,7 +40,7 @@ const DrawerNavigation = () => {
                                 ) => <CustomDrawerContent {...props} />
                             }
                     >
-                        <DrawerStack.Screen name="main" component={MainScreen}/> 
+                        <DrawerStack.Screen name="main" component={MainScreen} /> 
                     </DrawerStack.Navigator>
                 </NavigationContainer> 
             </Chat>
@@ -60,7 +60,7 @@ const CustomDrawerContent =
     const { clientIsReady } = useChatClient();
     const {setChannel} = useChatContext();
 
-    if (clientIsReady) {
+    if (!clientIsReady) {
       return <Text className='mt-10 text-center font-bold text-2xl'>Loading chat ...</Text>
     }
 

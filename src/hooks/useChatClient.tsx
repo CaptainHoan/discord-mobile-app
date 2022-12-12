@@ -21,6 +21,7 @@ const useChatClient = () => {
               },
               chatClient.devToken('captainhoan')
             )
+            setClientIsReady(true)
             //const channel = chatClient.channel(
               //'team',
              //'ethernity',
