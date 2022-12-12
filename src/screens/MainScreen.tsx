@@ -1,11 +1,10 @@
 import { View, Text, SafeAreaView, Dimensions } from 'react-native'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { signOut } from "firebase/auth";
-import { auth } from '../../firebaseConfig'
-import { Channel, MessageInput, MessageList } from 'stream-chat-expo';
+import { Channel, MessageInput, MessageList, OverlayProvider } from 'stream-chat-expo';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useChatContext } from '../hooks/chatContext';
+import type { DeepPartial, Theme } from 'stream-chat-expo';
 
 const {width, height}: {width: number, height: number} = Dimensions.get('screen')
 
@@ -13,7 +12,10 @@ const MainScreen = () => {
 
   const { channel } = useChatContext();
   const navigation = useNavigation();
-  
+
+  // remove the date shown above the chat
+  const MyEmptyComponent = () => null
+
   if(!channel) {
     return (
       <TouchableOpacity
@@ -26,20 +28,20 @@ const MainScreen = () => {
       </TouchableOpacity>
     )
   }
-    const signOutUser = async() => {
-        await signOut(auth)
-        .then (() => {
-            //signOut user
-        })
-        .catch(err => console.log(err.message))
+
+  const theme: DeepPartial<Theme> = {
+    colors:{
+        black: 'black'
     }
+}
 
   return (
-    <SafeAreaView className='flex-1' >
-      <Channel 
+    <View className='flex-1' >
+        <Channel 
         channel={channel} 
         key={channel?.data.name} 
         keyboardVerticalOffset={0}
+        DateHeader={MyEmptyComponent}
       >
         <View className="">
           <Text className='text-center text-xl font-bold'>{channel.data.name}</Text>
@@ -47,7 +49,7 @@ const MainScreen = () => {
         <MessageList />
         <MessageInput />
       </Channel>
-    </SafeAreaView>
+    </View>
   )
 }
 
