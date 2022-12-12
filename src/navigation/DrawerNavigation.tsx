@@ -1,65 +1,77 @@
-import { View, Text, TouchableOpacity, NativeMethods } from 'react-native'
-import React from 'react'
-import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer'
+import { Text, NativeMethods, SafeAreaView } from 'react-native'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { createDrawerNavigator, DrawerNavigationProp} from '@react-navigation/drawer'
 import MainScreen from '../screens/MainScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { NativeSafeAreaViewProps, SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons, AntDesign, Entypo } from '@expo/vector-icons';
+import { NavigationContainer, useNavigation, DrawerActions } from '@react-navigation/native';
 import { STREAMCHAT_KEY } from '@env';
 import useChatClient from '../hooks/useChatClient';
 import { StreamChat } from 'stream-chat';
 import {
     OverlayProvider,
     Chat,
-    ChannelList
+    ChannelList,
   } from 'stream-chat-expo'; // Or stream-chat-expo
 import { NativeProps } from 'react-native-safe-area-context/lib/typescript/specs/NativeSafeAreaView';
+import { ChatProvider, useChatContext } from '../hooks/chatContext';
 
-  const chatClient = StreamChat.getInstance(STREAMCHAT_KEY)
+const chatClient = StreamChat.getInstance(STREAMCHAT_KEY)
 
-const DrawerStack = createDrawerNavigator();
+type DrawerParamsType = {
+    main: undefined
+}
+
+type drawerNavigationPropsType = DrawerNavigationProp<DrawerParamsType, 'main'>
+
+const DrawerStack = createDrawerNavigator<DrawerParamsType>();
 
 const DrawerNavigation = () => {
   return (
-    <NavigationContainer>
+    <ChatProvider>
         <OverlayProvider>
             <Chat client={chatClient}>
-                <DrawerStack.Navigator 
-                    drawerContent={(
-                        props: JSX.IntrinsicAttributes 
-                        & NativeSafeAreaViewProps 
-                        & React.RefAttributes<React.Component<NativeProps, {}, any> 
-                        & Readonly<NativeMethods>>
-                        ) => <CustomDrawerContent {...props} />
-                    }
-                >
-                    <DrawerStack.Screen name="main" component={MainScreen}/>   
-                </DrawerStack.Navigator>
+                <NavigationContainer>
+                    <DrawerStack.Navigator
+                        drawerType= 'slide'
+                        overlayColor="transparent"
+                        drawerContent={(
+                                props: JSX.IntrinsicAttributes  
+                                & React.RefAttributes<React.Component<NativeProps, {}, any> 
+                                & Readonly<NativeMethods>>
+                                ) => <CustomDrawerContent {...props} />
+                            }
+                    >
+                        <DrawerStack.Screen name="main" component={MainScreen} /> 
+                    </DrawerStack.Navigator>
+                </NavigationContainer> 
             </Chat>
         </OverlayProvider>
-    </NavigationContainer>  
+    </ChatProvider>
   )
 }
 
 const CustomDrawerContent = 
     (props: 
         JSX.IntrinsicAttributes 
-        & NativeSafeAreaViewProps 
         & React.RefAttributes<React.Component<NativeProps, {}, any> 
         & Readonly<NativeMethods>>
     ) => {
-        
-    const { clientIsReady } = useChatClient();
 
-    if (clientIsReady) {
+    const navigation = useNavigation<drawerNavigationPropsType>();
+    const { clientIsReady } = useChatClient();
+    const {setChannel} = useChatContext();
+
+    if (!clientIsReady) {
       return <Text className='mt-10 text-center font-bold text-2xl'>Loading chat ...</Text>
     }
 
     return (
-       
         <SafeAreaView {...props} className='bg-white flex-1'>
-            <ChannelList />
-            {/** <DrawerItemList {...props}/>*/}     
+            <ChannelList
+                onSelect={(channel) => {
+                    setChannel(channel);
+                    navigation.navigate('main');
+                }} 
+            />
         </SafeAreaView>
     )
 }
