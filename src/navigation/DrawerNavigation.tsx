@@ -21,6 +21,7 @@ import { auth } from '../../firebaseConfig';
 import type { DeepPartial, Theme } from 'stream-chat-expo';
 import { Colors } from '../constants/Colors';
 import CreateChannel from '../components/CreateChannel';
+import { Swipeable } from 'react-native-gesture-handler';
 
 const chatClient = StreamChat.getInstance(STREAMCHAT_KEY)
 
@@ -48,6 +49,11 @@ const DrawerNavigation = () => {
                 }
             },
         },
+        messageInput: {
+            inputBoxContainer: {
+                borderColor: 'gray'
+            }
+        }
     }
 
   return (
@@ -117,6 +123,8 @@ const CustomDrawerContent =
 
     const [newChannel, setNewChannel] = useState<string>('')
     const [channelImg, setChannelImg] = useState('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png')
+
+    //delete channel
 
     return (
         <View {...props} className='flex-1 pt-3' style={{backgroundColor: '#121212'}}>
