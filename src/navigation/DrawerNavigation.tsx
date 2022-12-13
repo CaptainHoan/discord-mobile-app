@@ -151,7 +151,7 @@ const CustomDrawerContent =
                 labelStyle={{
                     textAlign: 'center',
                     fontSize: 18,
-                    color: 'white'
+                    color: 'red',
                 }}
                 style={{backgroundColor: '#121212'}}
                 onPress={signOutUser}
