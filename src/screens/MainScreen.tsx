@@ -1,10 +1,10 @@
 import { View, Text, SafeAreaView, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { Channel, MessageInput, MessageList, OverlayProvider } from 'stream-chat-expo';
+import { Channel, MessageInput, MessageList, OverlayProvider, useMessageInputContext } from 'stream-chat-expo';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { useChatContext } from '../hooks/chatContext';
-import type { DeepPartial, Theme } from 'stream-chat-expo';
+import { Ionicons } from '@expo/vector-icons';
 
 export const {width, height}: {width: number, height: number} = Dimensions.get('screen')
 
@@ -32,6 +32,19 @@ const MainScreen = () => {
     )
   }
 
+  // custom sender button
+  const customerSenderButton = () => {
+
+    const { sendMessage, text, imageUploads, fileUploads } = useMessageInputContext();
+    const isDisabled = !text && !imageUploads.length && !fileUploads.length;
+
+    return (
+      <TouchableOpacity disabled={isDisabled} onPress={sendMessage}>
+        <Ionicons name="send" size={24} color={isDisabled ? 'gray' : "#63A1E5"} />
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <SafeAreaView style={{backgroundColor: '#121212'}}>
         <Channel 
@@ -39,6 +52,7 @@ const MainScreen = () => {
         key={channel?.data.name} 
         keyboardVerticalOffset={0}
         DateHeader={MyEmptyComponent}
+        SendButton={customerSenderButton}
       >
         <View className='mt-2'>
           <Text className='text-center text-xl font-bold text-white'># {channel.data.name}</Text>

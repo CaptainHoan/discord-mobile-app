@@ -60,8 +60,8 @@ const CreateChannel = ({
 
     console.log(result);
 
-    if (!result.cancelled) {
-      setChannelImg(result.uri);
+    if (!result.canceled) {
+      setChannelImg(result.assets[0].uri);
     }
   };
 
@@ -80,9 +80,9 @@ const CreateChannel = ({
         <Text className='mb-2 text-center'>Choose your channel's avatar</Text> 
         <TouchableOpacity 
           onPress={pickImage}
-          className='rounded-full p-3 self-center mb-2' style={{borderWidth: 1, borderColor: 'red'}}>
+          className='rounded-full p-3 self-center mb-2'>
           <Image
-            style={{width: 50, height: 50, resizeMode: 'contain'}} 
+            style={{width: 60, height: 60, resizeMode: 'cover', borderRadius: 50}} 
             source={{uri: channelImg}}
           />
         </TouchableOpacity>
