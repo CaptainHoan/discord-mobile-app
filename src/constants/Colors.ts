@@ -1,5 +1,5 @@
 export const Colors = {
-  accent_blue: "#005FFF",
+  accent_blue: "#73C4F4",
   accent_green: "#20E070",
   accent_red: "#FF3742",
   bg_gradient_end: "#080808",

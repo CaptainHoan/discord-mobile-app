@@ -1,10 +1,10 @@
 import { Text, NativeMethods, View  } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { 
     createDrawerNavigator, 
     DrawerItem, 
     DrawerNavigationProp} from '@react-navigation/drawer'
-import MainScreen from '../screens/MainScreen';
+import MainScreen, { height } from '../screens/MainScreen';
 import { NavigationContainer, useNavigation,} from '@react-navigation/native';
 import { STREAMCHAT_KEY } from '@env';
 import useChatClient from '../hooks/useChatClient';
@@ -20,6 +20,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import type { DeepPartial, Theme } from 'stream-chat-expo';
 import { Colors } from '../constants/Colors';
+import CreateChannel from '../components/CreateChannel';
 
 const chatClient = StreamChat.getInstance(STREAMCHAT_KEY)
 
@@ -34,7 +35,19 @@ const DrawerStack = createDrawerNavigator<DrawerParamsType>();
 const DrawerNavigation = () => {
 
     const theme: DeepPartial<Theme> = {
-        colors: Colors
+        colors: Colors,
+        inlineDateSeparator: {
+            text: {
+                color: 'white'
+            }
+        },
+        messageSimple: {
+            content: {
+                containerInner: {
+                    backgroundColor: '#F47373'
+                }
+            },
+        },
     }
 
   return (
@@ -72,10 +85,16 @@ const CustomDrawerContent =
     const { clientIsReady } = useChatClient();
     const {setChannel} = useChatContext();
 
-    if (!clientIsReady) {
-      return <Text className='mt-10 text-center font-bold text-2xl'>Loading chat ...</Text>
+    if (clientIsReady) {
+      return (
+        <View style={{backgroundColor: '#121212', flex: 1, paddingTop: height / 2}}>
+            <Text className=' text-center font-bold text-2xl text-white'>Loading chat ...</Text>
+        </View>
+      )
+      
     }
 
+    //press to sign out user using Firebase auth
     const signOutUser = async() => {
         await signOut(auth)
         .then (() => {
@@ -84,6 +103,21 @@ const CustomDrawerContent =
         .catch(err => console.log(err.message))
     }
 
+    //configure dialog to create new channel
+    const [dialogVisible, setDialogVisible] = useState<boolean>(false)
+
+    
+    const showDialog = () => {
+        setDialogVisible(true);
+    };
+
+    const handleCancel = () => {
+        setDialogVisible(false);
+    };
+
+    const [newChannel, setNewChannel] = useState<string>('')
+    const [channelImg, setChannelImg] = useState('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png')
+
     return (
         <View {...props} className='flex-1 pt-3' style={{backgroundColor: '#121212'}}>
             <ChannelList
@@ -91,6 +125,26 @@ const CustomDrawerContent =
                     setChannel(channel);
                     navigation.navigate('main');
                 }} 
+            />
+            <DrawerItem
+                label="create channel"
+                labelStyle={{
+                    textAlign: 'center',
+                    fontSize: 18,
+                    color: 'white'
+                }}
+                style={{backgroundColor: '#121212'}}
+                onPress={showDialog}
+            />
+            <CreateChannel 
+                dialogVisible={dialogVisible}
+                showDialog={showDialog}
+                handleCancel={handleCancel}
+                setDialogVisible={setDialogVisible}
+                newChannel={newChannel}
+                setNewChannel = {setNewChannel}
+                channelImg={channelImg}
+                setChannelImg={setChannelImg}
             />
             <DrawerItem
                 label="Sign out"

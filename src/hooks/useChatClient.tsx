@@ -1,4 +1,5 @@
 import { STREAMCHAT_KEY } from '@env';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react'
 import { StreamChat } from 'stream-chat';
 import { auth } from '../../firebaseConfig';
@@ -17,11 +18,12 @@ const useChatClient = () => {
             chatClient.connectUser(
               {
                 id: 'captainhoan',
-                name: 'captainhoan'
+                name: 'captainhoan',
+                image: 'https://image.cnbcfm.com/api/v1/image/104891709-Bill_Gates_the_co-Founder.jpg?v=1558120888'
               },
               chatClient.devToken('captainhoan')
             )
-            setClientIsReady(true)
+            //setClientIsReady(true)
             //const channel = chatClient.channel(
               //'team',
              //'ethernity',
